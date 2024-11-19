@@ -80,12 +80,6 @@ func init() {
 func initConfig() {
 	if cfgFile != "" {
 		viper.SetConfigFile(cfgFile)
-	} else {
-		home, err := os.UserHomeDir()
-		cobra.CheckErr(err)
-		viper.AddConfigPath(home)
-		viper.SetConfigType("{{ cookiecutter.config_type }}")
-		viper.SetConfigName("{{ cookiecutter.default_config_prefix }}")
 	}
 	viper.SetEnvPrefix("{{ cookiecutter.env_prefix }}")
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
