@@ -13,12 +13,6 @@ repos:
         language: system
         files: '\.go$'
         pass_filenames: false
-      - id: golint
-        name: "golint"
-        entry: golint ./...
-        language: system
-        files: '\.go$'
-        pass_filenames: false
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
     hooks:
