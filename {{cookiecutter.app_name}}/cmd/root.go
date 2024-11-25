@@ -68,10 +68,10 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "{{ cookiecutter.config_type }} config file (default: $HOME/{{ cookiecutter.default_config_prefix }}.{{ cookiecutter.config_type }})")
-	rootCmd.PersistentFlags().String("log-level", "info", "Set the log level (debug, info, warn, error, fatal, panic) (default: info)")
-	rootCmd.PersistentFlags().String("log-file", "", "Write logs in json format to this file (default: '')")
-	rootCmd.PersistentFlags().Bool("log-caller", false, "Include the caller file and line number (default: false)")
+	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "{{ cookiecutter.config_type }} config file")
+	rootCmd.PersistentFlags().String("log-level", "info", "Set the log level (debug, info, warn, error, fatal, panic)")
+	rootCmd.PersistentFlags().String("log-file", "", "Write logs in json format to this file")
+	rootCmd.PersistentFlags().Bool("log-caller", false, "Include the caller file and line number")
 	viper.BindPFlag("log.level", rootCmd.PersistentFlags().Lookup("log-level"))
 	viper.BindPFlag("log.file", rootCmd.PersistentFlags().Lookup("log-file"))
 	viper.BindPFlag("log.caller", rootCmd.PersistentFlags().Lookup("log-caller"))
