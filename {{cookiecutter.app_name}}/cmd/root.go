@@ -17,7 +17,7 @@ var rootCmd = &cobra.Command{
 	Use:   "{{ cookiecutter.bin_name }}",
 	Short: "A brief description of your application",
 	Long: `A longer description`,
-	Version: version.Version,
+	Version: fmt.Sprintf("%s", version.GetVersion()),
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		initializeLogger(viper.GetString("log.level"), viper.GetBool("log.caller"), viper.GetString("log.file"))
 	},

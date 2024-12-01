@@ -19,7 +19,7 @@ help:
 build:
 	@echo "building ${BIN_NAME} ${VERSION}"
 	@echo "GOPATH=${GOPATH}"
-	go build -ldflags "-X {{ cookiecutter.module_name }}/version.GitCommit=${GIT_COMMIT}${GIT_DIRTY} -X {{ cookiecutter.module_name }}/version.BuildDate=${BUILD_DATE}" -o bin/${BIN_NAME}
+	go build -ldflags "-X {{ cookiecutter.module_name }}/version.gitRef=${GIT_COMMIT}${GIT_DIRTY} -X {{ cookiecutter.module_name }}/version.buildDate=${BUILD_DATE}" -o bin/${BIN_NAME}
 
 clean:
 	@test ! -e bin/${BIN_NAME} || rm bin/${BIN_NAME}
