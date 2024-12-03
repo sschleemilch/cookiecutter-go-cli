@@ -17,5 +17,5 @@ if __name__ == '__main__':
         remove_file('.gitignore')
         remove_file('.pre-commit-config.yaml')
 
-    subprocess.check_call(["go", "mod", "tidy"])
-    subprocess.check_call(["go", "get", "-u", "./..."])
+    # subprocess.check_call(["go", "mod", "tidy"])
+    # subprocess.check_call(["go", "get", "-u", "./..."])
