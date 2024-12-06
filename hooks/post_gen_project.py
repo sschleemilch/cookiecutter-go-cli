@@ -9,13 +9,9 @@ def remove_file(filepath):
     os.remove(os.path.join(PROJECT_DIRECTORY, filepath))
 
 
-if __name__ == '__main__':
-
-    if '{{ cookiecutter.git }}' == 'y':
+if __name__ == "__main__":
+    if "{{ cookiecutter.git }}" == "y":
         subprocess.check_call(["git", "init", "-b", "main"], cwd=PROJECT_DIRECTORY)
     else:
-        remove_file('.gitignore')
-        remove_file('.pre-commit-config.yaml')
-
-    # subprocess.check_call(["go", "mod", "tidy"])
-    # subprocess.check_call(["go", "get", "-u", "./..."])
+        remove_file(".gitignore")
+        remove_file(".pre-commit-config.yaml")

@@ -1,0 +1,6 @@
+[tool.bumpversion]
+current_version = "1.0.0"
+allow_dirty = true
+
+[[tool.bumpversion.files]]
+filename = "./version/version.go"
