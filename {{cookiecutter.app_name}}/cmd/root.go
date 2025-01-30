@@ -18,14 +18,14 @@ var rootCmd = &cobra.Command{
 	Use:     "{{ cookiecutter.bin_name }}",
 	Short:   "A brief description of your application",
 	Long:    `A longer description`,
-	Version: fmt.Sprintf("%s", version.GetVersion()),
+	Version: version.GetVersion().String(),
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		logger.Init(viper.GetString("log.level"), viper.GetBool("log.caller"), viper.GetString("log.file"), viper.GetBool("log.json"))
 	},
 {% if cookiecutter.subcommands != "y" %}
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Info().Msg("Running root info")
-		log.Debug().Msg("Running root debug")
+		fmt.Println(version.GetVersion().Details())
+		log.Info().Msg("Running")
 	},
 {% endif %}
 }
