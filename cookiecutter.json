@@ -4,7 +4,7 @@
     "bin_name": "{{ cookiecutter.app_name }}",
     "config_type": "yaml",
     "module_name": "github.com/sschleemilch/{{ cookiecutter.app_name }}",
-    "go_version": "1.22.0",
+    "go_version": "1.23.3",
     "git": "y",
     "subcommands": "n",
     "init_version": "0.0.1"
