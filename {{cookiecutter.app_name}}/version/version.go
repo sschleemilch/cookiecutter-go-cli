@@ -9,7 +9,7 @@ import (
 	"runtime"
 )
 
-const versionNumber = "1.0.0"
+const versionNumber = "{{cookiecutter.init_version}}"
 
 // Filled on build time
 var gitRef string
@@ -29,6 +29,16 @@ type Version struct {
 
 func (v *Version) String() string {
 	return v.Number
+}
+
+func (v *Version) Details() string {
+	d := fmt.Sprintln("Version:", v.Number)
+	d += fmt.Sprintln("Build Date:", v.BuildDate)
+	d += fmt.Sprintln("Git ref:", v.GitRef)
+	d += fmt.Sprintln("sha256:", v.Sha)
+	d += fmt.Sprintln("OS:", v.Os)
+	d += fmt.Sprintln("Arch:", v.Arch)
+	return d
 }
 
 func GetVersion() *Version {
