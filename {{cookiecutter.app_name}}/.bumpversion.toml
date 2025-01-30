@@ -1,5 +1,5 @@
 [tool.bumpversion]
-current_version = "1.0.0"
+current_version = "{{cookiecutter.init_version}}"
 allow_dirty = true
 
 [[tool.bumpversion.files]]

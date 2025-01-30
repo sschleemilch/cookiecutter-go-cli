@@ -7,5 +7,6 @@
     "module_name": "github.com/sschleemilch/{{ cookiecutter.app_name }}",
     "go_version": "1.22.0",
     "git": "y",
-    "subcommands": "n"
+    "subcommands": "n",
+    "init_version": "0.0.1"
 }
