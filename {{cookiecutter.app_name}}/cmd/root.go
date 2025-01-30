@@ -20,7 +20,7 @@ var rootCmd = &cobra.Command{
 	Long:    `A longer description`,
 	Version: fmt.Sprintf("%s", version.GetVersion()),
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		logger.Init(viper.GetString("log.level"), viper.GetBool("log.caller"), viper.GetString("log.file"))
+		logger.Init(viper.GetString("log.level"), viper.GetBool("log.caller"), viper.GetString("log.file"), viper.GetBool("log.json"))
 	},
 {% if cookiecutter.subcommands != "y" %}
 	Run: func(cmd *cobra.Command, args []string) {
@@ -52,4 +52,7 @@ func init() {
 
 	rootCmd.PersistentFlags().Bool("log-caller", false, "Include the caller file and line number")
 	viper.BindPFlag("log.caller", rootCmd.PersistentFlags().Lookup("log-caller"))
+
+	rootCmd.Flags().Bool("log-json", false, "Log as json messages")
+	viper.BindPFlag("log.json", rootCmd.Flags().Lookup("log-json"))
 }
