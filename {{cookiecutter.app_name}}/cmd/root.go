@@ -37,6 +37,12 @@ func Execute() {
 	}
 }
 
+func bindFlag(key string, flag string) {
+	if err := viper.BindPFlag(key, rootCmd.PersistentFlags().Lookup(flag)); err != nil {
+		log.Warn().Err(err).Msgf("[Viper] Could not bind flag: %s", flag)
+	}
+}
+
 func init() {
 	cobra.OnInitialize(initConfig)
 
@@ -45,14 +51,14 @@ func init() {
 
 	// Logging
 	rootCmd.PersistentFlags().String("log-level", "info", "Set the log level (debug, info, warn, error, fatal, panic)")
-	viper.BindPFlag("log.level", rootCmd.PersistentFlags().Lookup("log-level"))
+	bindFlag("log.level", "log-level")
 
 	rootCmd.PersistentFlags().String("log-file", "", "Write logs in json format to this file")
-	viper.BindPFlag("log.file", rootCmd.PersistentFlags().Lookup("log-file"))
+	bindFlag("log.file", "log-file")
 
 	rootCmd.PersistentFlags().Bool("log-caller", false, "Include the caller file and line number")
-	viper.BindPFlag("log.caller", rootCmd.PersistentFlags().Lookup("log-caller"))
+	bindFlag("log.caller", "log-caller")
 
-	rootCmd.Flags().Bool("log-json", false, "Log as json messages")
-	viper.BindPFlag("log.json", rootCmd.Flags().Lookup("log-json"))
+	rootCmd.PersistentFlags().Bool("log-json", false, "Log as json messages")
+	bindFlag("log.json", "log-json")
 }

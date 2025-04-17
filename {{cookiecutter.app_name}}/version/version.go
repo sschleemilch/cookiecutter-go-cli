@@ -12,8 +12,10 @@ import (
 const versionNumber = "{{cookiecutter.init_version}}"
 
 // Filled on build time
-var gitRef string
-var buildDate string
+var (
+	gitRef    string
+	buildDate string
+)
 
 // Singleton
 var version *Version
@@ -69,7 +71,11 @@ func computeSHA256(filePath string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	defer file.Close()
+	defer func() {
+		if err := file.Close(); err != nil {
+			panic(fmt.Sprintf("Could not close file %s: %s", filePath, err.Error()))
+		}
+	}()
 
 	hash := sha256.New()
 	if _, err := io.Copy(hash, file); err != nil {

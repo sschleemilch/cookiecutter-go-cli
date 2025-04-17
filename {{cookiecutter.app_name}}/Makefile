@@ -4,16 +4,18 @@ GIT_COMMIT=$(shell git rev-parse HEAD)
 GIT_DIRTY=$(shell test -n "`git status --porcelain`" && echo "-DIRTY" || true)
 BUILD_DATE=$(shell date '+%Y-%m-%d-%H:%M:%S')
 
-default: test
+default: fmt lint modernize test build
 
 help:
-	@echo 'Management commands for {{ cookiecutter.app_name }}:'
 	@echo
 	@echo 'Usage:'
 	@echo '    make build           Compile the project.'
-	@echo '    make test            Run tests on a compiled project.'
+	@echo '    make test            Run tests.'
 	@echo '    make clean           Clean the directory tree.'
 	@echo '    make upgrade         Upgrades all dependencies.'
+	@echo '    make modernize       Find and fix more modern go usages.'
+	@echo '    make fmt             Format sources.'
+	@echo '    make lint            Run linters.'
 	@echo
 
 build:
@@ -27,6 +29,16 @@ clean:
 test:
 	go test ./...
 
+fmt:
+	go fmt ./...
 
 upgrade:
 	go get -u ./...
+
+lint:
+	go vet ./...
+	staticcheck ./...
+	golangci-lint run
+
+modernize:
+	go run golang.org/x/tools/gopls/internal/analysis/modernize/cmd/modernize@latest  ./...
