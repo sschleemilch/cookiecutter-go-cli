@@ -34,7 +34,7 @@ func (v *Version) String() string {
 }
 
 func (v *Version) Details() string {
-	d := fmt.Sprintln("Version:", v.Number)
+	d := fmt.Sprintln("\nVersion:", v.Number)
 	d += fmt.Sprintln("Build Date:", v.BuildDate)
 	d += fmt.Sprintln("Git ref:", v.GitRef)
 	d += fmt.Sprintln("sha256:", v.Sha)
