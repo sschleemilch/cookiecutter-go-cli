@@ -12,7 +12,6 @@ help:
 	@echo '    make build           Compile the project.'
 	@echo '    make test            Run tests.'
 	@echo '    make clean           Clean the directory tree.'
-	@echo '    make upgrade         Upgrades all dependencies.'
 	@echo '    make modernize       Find and fix more modern go usages.'
 	@echo '    make fmt             Format sources.'
 	@echo '    make lint            Run linters.'
@@ -31,9 +30,6 @@ test:
 
 fmt:
 	go fmt ./...
-
-upgrade:
-	go get -u ./...
 
 lint:
 	go vet ./...

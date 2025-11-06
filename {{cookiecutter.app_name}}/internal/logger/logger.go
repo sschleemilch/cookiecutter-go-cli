@@ -1,52 +1,43 @@
 package logger
 
 import (
+	"fmt"
+	"log/slog"
 	"os"
-	"strings"
-
-	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
 )
 
 var initialized = false
 
-func Init(logLevel string, logCaller bool, logFile string, json bool) {
+func parseLevel(logLevel string) (slog.Level, error) {
+	var level slog.Level
+	err := level.UnmarshalText([]byte(logLevel))
+	return level, err
+}
+
+func Init(logLevel string, logCaller bool, asJson bool) error {
 	if initialized {
-		return
+		return nil
 	}
-	level, err := zerolog.ParseLevel(strings.ToLower(logLevel))
+
+	level, err := parseLevel(logLevel)
 	if err != nil {
-		log.Fatal().Err(err).Msg("Invalid log level")
-		os.Exit(1)
-	}
-	zerolog.SetGlobalLevel(level)
-
-	var logFileFd *os.File
-	if logFile != "" {
-		logFileFd, err = os.OpenFile(logFile, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
-		if err != nil {
-			log.Fatal().Err(err).Str("file", logFile).Str("state", "init").Msg("[Log]")
-			os.Exit(1)
-		}
+		return fmt.Errorf("parsing level: %w", err)
 	}
 
-	consoleWriter := &zerolog.ConsoleWriter{Out: os.Stdout}
-	if logFileFd != nil {
-		if json {
-			log.Logger = zerolog.New(zerolog.MultiLevelWriter(logFileFd, os.Stdout))
-		} else {
-			log.Logger = zerolog.New(zerolog.MultiLevelWriter(consoleWriter, logFileFd))
-		}
+	options := &slog.HandlerOptions{
+		AddSource: logCaller,
+		Level:     level,
+	}
+
+	var handler slog.Handler
+	if asJson {
+		handler = slog.NewJSONHandler(os.Stdout, options)
 	} else {
-		if !json {
-			log.Logger = zerolog.New(zerolog.MultiLevelWriter(consoleWriter))
-		}
+		handler = slog.NewTextHandler(os.Stdout, options)
 	}
+	slog.SetDefault(slog.New(handler))
 
-	if logCaller {
-		log.Logger = log.With().Caller().Logger()
-	}
-
-	log.Logger = log.With().Timestamp().Logger()
 	initialized = true
+
+	return nil
 }

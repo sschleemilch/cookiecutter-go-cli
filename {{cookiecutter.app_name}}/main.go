@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
+	"log/slog"
 	"os"
 	"strings"
 
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
@@ -21,10 +21,14 @@ var rootCmd = &cobra.Command{
 	Long:    `A longer description`,
 	Version: version.GetVersion().Details(),
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		logger.Init(viper.GetString("log.level"), viper.GetBool("log.caller"), viper.GetString("log.file"), viper.GetBool("log.json"))
+		if err := logger.Init(viper.GetString("log.level"), viper.GetBool("log.caller"), viper.GetBool("log.json")); err != nil {
+			fmt.Printf("could not init logger: %s\n", err)
+			os.Exit(1)
+		}
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Info().Msg("Running")
+		slog.Info("Running")
+		slog.Debug("Running")
 	},
 }
 
@@ -37,7 +41,7 @@ func main() {
 
 func bindFlag(key string, flag string) {
 	if err := viper.BindPFlag(key, rootCmd.PersistentFlags().Lookup(flag)); err != nil {
-		log.Warn().Err(err).Msgf("[Viper] Could not bind flag: %s", flag)
+		slog.Warn("[Viper] Could not bind flag", slog.String("flag", flag), slog.Any("error", err))
 	}
 }
 
@@ -61,11 +65,8 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "{{ cookiecutter.config_type }} config file")
 
 	// Logging
-	rootCmd.PersistentFlags().String("log-level", "info", "Set the log level (debug, info, warn, error, fatal, panic)")
+	rootCmd.PersistentFlags().String("log-level", "info", "Set the log level (debug, info, warn, error)")
 	bindFlag("log.level", "log-level")
-
-	rootCmd.PersistentFlags().String("log-file", "", "Write logs in json format to this file")
-	bindFlag("log.file", "log-file")
 
 	rootCmd.PersistentFlags().Bool("log-caller", false, "Include the caller file and line number")
 	bindFlag("log.caller", "log-caller")
