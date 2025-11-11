@@ -26,9 +26,10 @@ var rootCmd = &cobra.Command{
 			os.Exit(1)
 		}
 	},
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		slog.Info("Running")
 		slog.Debug("Running")
+		return nil
 	},
 }
 
