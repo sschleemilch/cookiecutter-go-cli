@@ -10,7 +10,7 @@ import (
 
 var initialized = false
 
-func Init(logLevel string, logCaller bool, logFile string, json bool) {
+func Init(logLevel string, logCaller bool, json bool) {
 	if initialized {
 		return
 	}
@@ -21,26 +21,9 @@ func Init(logLevel string, logCaller bool, logFile string, json bool) {
 	}
 	zerolog.SetGlobalLevel(level)
 
-	var logFileFd *os.File
-	if logFile != "" {
-		logFileFd, err = os.OpenFile(logFile, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
-		if err != nil {
-			log.Fatal().Err(err).Str("file", logFile).Str("state", "init").Msg("[Log]")
-			os.Exit(1)
-		}
-	}
-
 	consoleWriter := &zerolog.ConsoleWriter{Out: os.Stdout}
-	if logFileFd != nil {
-		if json {
-			log.Logger = zerolog.New(zerolog.MultiLevelWriter(logFileFd, os.Stdout))
-		} else {
-			log.Logger = zerolog.New(zerolog.MultiLevelWriter(consoleWriter, logFileFd))
-		}
-	} else {
-		if !json {
-			log.Logger = zerolog.New(zerolog.MultiLevelWriter(consoleWriter))
-		}
+	if !json {
+		log.Logger = zerolog.New(zerolog.MultiLevelWriter(consoleWriter))
 	}
 
 	if logCaller {
