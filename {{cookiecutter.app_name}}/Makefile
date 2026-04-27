@@ -12,9 +12,9 @@ help:
 	@echo '    make build           Compile the project.'
 	@echo '    make test            Run tests.'
 	@echo '    make clean           Clean the directory tree.'
-	@echo '    make upgrade         Upgrades all dependencies.'
 	@echo '    make modernize       Find and fix more modern go usages.'
 	@echo '    make fmt             Format sources.'
+	@echo '    make bump            Bumps all direct dependencies.'
 	@echo '    make lint            Run linters.'
 	@echo
 
@@ -32,8 +32,9 @@ test:
 fmt:
 	go fmt ./...
 
-upgrade:
-	go get -u ./...
+bump:
+	go get $(go list -m -f '{{"{{if not .Indirect}}{{.Path}}{{end}}"}}' all)
+	go mod tidy
 
 lint:
 	go vet ./...
