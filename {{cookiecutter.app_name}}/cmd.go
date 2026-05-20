@@ -10,8 +10,6 @@ import (
 	"{{ cookiecutter.module_name }}/version"
 )
 
-var cfgFile string
-
 var introLines = []string{
 	version.GetVersion().Details(),
 }

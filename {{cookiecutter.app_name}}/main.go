@@ -10,6 +10,8 @@ import (
 	"github.com/spf13/viper"
 )
 
+var cfgFile string
+
 func main() {
 	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)
