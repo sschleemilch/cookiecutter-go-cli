@@ -1,5 +1,4 @@
 BIN_NAME={{ cookiecutter.bin_name }}
-VERSION := $(shell grep "const Version " version/version.go | sed -E 's/.*"(.+)"$$/\1/')
 GIT_COMMIT=$(shell git rev-parse HEAD)
 GIT_DIRTY=$(shell git diff --quiet || echo "-DIRTY" && echo "")
 BUILD_DATE=$(shell date '+%Y-%m-%d-%H:%M:%S')
@@ -19,8 +18,6 @@ help:
 	@echo
 
 build:
-	@echo "building ${BIN_NAME} ${VERSION}"
-	@echo "GOPATH=${GOPATH}"
 	go build -ldflags "-X {{ cookiecutter.module_name }}/version.gitRef=${GIT_COMMIT}${GIT_DIRTY} -X {{ cookiecutter.module_name }}/version.buildDate=${BUILD_DATE}" -o bin/${BIN_NAME}
 
 clean:

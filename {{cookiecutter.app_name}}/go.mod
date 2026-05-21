@@ -1,6 +1,6 @@
 module {{ cookiecutter.module_name }}
 
-go {{ cookiecutter.go_version }}
+go 1.26.3
 
 require (
 	github.com/spf13/cobra v1.10.1

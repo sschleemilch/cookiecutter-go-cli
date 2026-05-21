@@ -34,6 +34,9 @@ if __name__ == "__main__":
         Path(".gitignore").unlink()
         Path(".pre-commit-config.yaml").unlink()
 
+    if "{{ cookiecutter.dockerfile }}" != "y":
+        Path("Dockerfile").unlink()
+
     _ = subprocess.check_call(["go", "mod", "tidy"])
 
     for dep in get_deps():
