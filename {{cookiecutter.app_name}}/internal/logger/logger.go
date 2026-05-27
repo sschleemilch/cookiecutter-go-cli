@@ -26,10 +26,11 @@ func Init(logLevel string, logCaller bool, json bool) {
 		log.Logger = zerolog.New(zerolog.MultiLevelWriter(consoleWriter))
 	}
 
+	log.Logger = log.With().Timestamp().Logger()
+
 	if logCaller {
-		log.Logger = log.With().Caller().Logger()
+		log.Logger = log.With().Timestamp().Caller().Logger()
 	}
 
-	log.Logger = log.With().Timestamp().Logger()
 	initialized = true
 }
