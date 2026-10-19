@@ -2,14 +2,14 @@ FROM golang:1.26-alpine AS builder
 
 WORKDIR /app
 
-RUN apk add --no-cache make git
+RUN apk add --no-cache just git
 
 COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . .
 
-RUN make build
+RUN just build
 
 FROM gcr.io/distroless/static-debian13
 WORKDIR /

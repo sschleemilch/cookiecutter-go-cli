@@ -1,0 +1,28 @@
+BIN_NAME := "{{ cookiecutter.bin_name }}"
+GIT_COMMIT := `git rev-parse HEAD`
+GIT_DIRTY := `git diff --quiet || printf '%s' '-DIRTY'`
+BUILD_DATE := `date '+%Y-%m-%d-%H:%M:%S'`
+
+default: fmt lint test build
+
+build:
+    go build -ldflags "-X atc-github.azure.cloud.bmw/coffee/ecosys.dash/version.gitRef={{GIT_COMMIT}}{{GIT_DIRTY}} -X atc-github.azure.cloud.bmw/coffee/ecosys.dash/version.buildDate={{BUILD_DATE}}" -o bin/{{BIN_NAME}}
+
+clean:
+    test ! -e bin/{{BIN_NAME}} || rm bin/{{BIN_NAME}}
+
+test:
+    go test ./...
+
+fmt:
+    go fmt ./...
+
+bump:
+    go get $(go list -m -f '{{"{{"}}if not .Indirect{{"}}"}}{{"{{"}}.Path{{"}}"}}{{"{{"}}end{{"}}"}}' all)
+    go mod tidy
+
+lint:
+    go vet ./...
+    go fix ./...
+    staticcheck ./...
+    golangci-lint run
