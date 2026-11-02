@@ -5,6 +5,7 @@
   "config_type": "yaml",
   "module_name": "github.com/sschleemilch/{{ cookiecutter.app_name }}",
   "git": "y",
+  "nix": "y",
   "dockerfile": "y",
   "init_version": "1.0.0"
 }
