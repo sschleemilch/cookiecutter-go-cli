@@ -1,10 +1,12 @@
-let
-  nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-26.05";
-  pkgs = import nixpkgs {
+{
+  sources ? import ./npins,
+  system ? builtins.currentSystem,
+  pkgs ? import sources.nixpkgs {
+    inherit system;
     config = { };
     overlays = [ ];
-  };
-in
+  },
+}:
 
 pkgs.mkShell {
   packages = with pkgs; [
@@ -13,6 +15,4 @@ pkgs.mkShell {
     go-tools
     golangci-lint
   ];
-
-  # LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [ pkgs.stdenv.cc.cc.lib ];
 }
