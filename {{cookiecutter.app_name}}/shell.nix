@@ -10,7 +10,7 @@
 
 pkgs.mkShell {
   packages = with pkgs; [
-    go
+    go_1_27
     just
     go-tools
     golangci-lint
